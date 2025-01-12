@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step Counter</title>
+</head>
+<body>
+    <h1>Step Counter</h1>
+    <p id="steps">Steps: 0</p>
+    <script>
+        let steps = 0;
+        let threshold = 10; // Threshold for motion detection
+
+        window.addEventListener('devicemotion', (event) => {
+            let acc = event.acceleration;
+            if (acc.x > threshold || acc.y > threshold || acc.z > threshold) {
+                steps++;
+                document.getElementById('steps').innerText = `Steps: ${steps}`;
+            }
+        });
+    </script>
+</body>
+</html>
