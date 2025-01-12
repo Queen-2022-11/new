@@ -8,17 +8,27 @@
 <body>
     <h1>Step Counter</h1>
     <p id="steps">Steps: 0</p>
+    <p id="status">Status: Waiting for motion...</p>
     <script>
         let steps = 0;
-        let threshold = 10; // Threshold for motion detection
+        let threshold = 2; // Adjusted for sensitivity
 
-        window.addEventListener('devicemotion', (event) => {
-            let acc = event.acceleration;
-            if (acc.x > threshold || acc.y > threshold || acc.z > threshold) {
-                steps++;
-                document.getElementById('steps').innerText = `Steps: ${steps}`;
-            }
-        });
+        // Check if the device supports the devicemotion event
+        if (window.DeviceMotionEvent) {
+            document.getElementById('status').innerText = "Status: Ready";
+
+            // Add event listener for motion
+            window.addEventListener('devicemotion', (event) => {
+                let acc = event.accelerationIncludingGravity; // Use broader support
+
+                if (acc && (Math.abs(acc.x) > threshold || Math.abs(acc.y) > threshold || Math.abs(acc.z) > threshold)) {
+                    steps++;
+                    document.getElementById('steps').innerText = `Steps: ${steps}`;
+                }
+            });
+        } else {
+            document.getElementById('status').innerText = "Status: DeviceMotion not supported";
+        }
     </script>
 </body>
 </html>
